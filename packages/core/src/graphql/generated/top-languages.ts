@@ -1,49 +1,63 @@
 // Generated file — see .github/CONTRIBUTING.md
 
 /** Internal type. DO NOT USE DIRECTLY. */
-type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-import type * as Types from "./common.js";
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+import type * as Types from "./common.js"
 
-import { graphqlDocument } from "../graphqlDocument.js";
+import { graphqlDocument } from "../graphqlDocument.js"
 export type TopLanguageFragment = {
-  size: number;
-  node: { color: string | null; name: string };
-};
+  size: number
+  node: { color: string | null; name: string }
+}
 
 export type TopLanguagesRepositoryFragment = {
-  name: string;
+  name: string
   languages: {
     edges: Array<{
-      size: number;
-      node: { color: string | null; name: string };
-    } | null> | null;
-  } | null;
-};
+      size: number
+      node: { color: string | null; name: string }
+    } | null> | null
+  } | null
+}
 
 export type TopLanguagesQueryVariables = Exact<{
-  login: string;
+  login: string
   ownerAffiliations?:
     | Array<Types.RepositoryAffiliation | null | undefined>
     | Types.RepositoryAffiliation
     | null
-    | undefined;
-}>;
+    | undefined
+}>
 
 export type TopLanguagesQuery = {
   user: {
     repositories: {
       nodes: Array<{
-        name: string;
+        name: string
         languages: {
           edges: Array<{
-            size: number;
-            node: { color: string | null; name: string };
-          } | null> | null;
-        } | null;
-      } | null> | null;
-    };
-  } | null;
-};
+            size: number
+            node: { color: string | null; name: string }
+          } | null> | null
+        } | null
+      } | null> | null
+    }
+  } | null
+  viewer: {
+    login: string
+    repositories: {
+      nodes: Array<{
+        name: string
+        languages: {
+          edges: Array<{
+            size: number
+            node: { color: string | null; name: string }
+          } | null> | null
+        } | null
+      } | null> | null
+    }
+  }
+}
 
 export const TopLanguagesDocument = graphqlDocument<
   TopLanguagesQuery,
@@ -52,6 +66,14 @@ export const TopLanguagesDocument = graphqlDocument<
 query topLanguages($login: String!, $ownerAffiliations: [RepositoryAffiliation]) {
   user(login: $login) {
     repositories(ownerAffiliations: $ownerAffiliations, isFork: false, first: 100) {
+      nodes {
+        ...TopLanguagesRepository
+      }
+    }
+  }
+viewer {
+  login
+    repositories(affiliations: $ownerAffiliations, ownerAffiliations: $ownerAffiliations, isFork: false, first: 100) {
       nodes {
         ...TopLanguagesRepository
       }
@@ -72,4 +94,4 @@ fragment TopLanguage on LanguageEdge {
     color
     name
   }
-}`);
+}`)
